@@ -189,6 +189,16 @@
     pointer-events: none;
     z-index: 4;
   }
+  /* Expanded invisible hit target — extends 25px in every direction so
+     "fat fingers" can find the toggle even on quick taps. The toggle's
+     visible size stays the same; only the touch zone grows. */
+  .stick::after {
+    content: '';
+    position: absolute;
+    inset: -25px;
+    z-index: 0;
+    /* Transparent fill, no visible appearance — purely a pointer target. */
+  }
   /* Slot — narrow vertical opening that the shaft passes through. Sized
      smaller than the ball so the ball covers it when centered. The slot's
      length is just enough to allow shaft motion at maximum joystick offset
