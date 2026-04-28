@@ -94,9 +94,8 @@
       0 0 4px rgba(255, 206, 0, 0.85),
       0 0 8px rgba(255, 206, 0, 0.45);
     display: inline-block;
-    text-align: right;
-    /* Reserve enough width for the ghost (longest ghost = 4 chars).
-       Each digit is ~14px in DSEG7 at 22px, plus a little buffer. */
+    text-align: center;
+    /* Reserve enough width for the ghost (longest ghost = 4 chars). */
     min-width: 4ch;
   }
   /* Dim "ghost" digits behind the live value to fake unlit LED segments. */
@@ -104,7 +103,7 @@
     content: attr(data-ghost);
     position: absolute;
     inset: 0;
-    text-align: right;
+    text-align: center;
     color: rgba(255, 206, 0, 0.12);
     text-shadow: none;
     z-index: -1;
@@ -163,19 +162,6 @@
     align-items: center;
     position: relative;
   }
-  /* START button is positioned absolutely in the horizontal center of the
-     controls row, vertically centered between the two joystick wells. */
-  #start-area {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
 
   /* Stick base (the circular well surrounding the joystick) */
   .stick {
@@ -186,11 +172,22 @@
     background-image: url("data:image/jpeg;base64,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");
     background-size: cover;
     background-position: center;
-    box-shadow:
-      inset 0 4px 12px rgba(0,0,0,0.85),
-      0 2px 0 rgba(255,255,255,0.04),
-      0 6px 14px rgba(0,0,0,0.55);
     touch-action: none;
+    position: relative;
+  }
+  /* Subtle gradient stroke around the toggle — light at top, dark at bottom. */
+  .stick::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.175) 0%, rgba(255,255,255,0.035) 50%, rgba(0,0,0,0.49) 80%, rgba(255,255,255,0.14) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 4;
   }
   /* Slot — narrow vertical opening that the shaft passes through. Sized
      smaller than the ball so the ball covers it when centered. The slot's
@@ -267,13 +264,36 @@
       0 6px 12px rgba(0,0,0,0.2);
   }
 
-  /* Start button area — between playfield and joystick controls */
+  /* Start button area — between playfield and joystick controls.
+     Styled as a panel with a gray gradient matching the toggles, but
+     stays absolutely positioned in the controls row's center. */
   #start-area {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 4px;
+    padding: 8px 14px;
+    background:
+      linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 50%, #0c0c0c 100%);
+    border-radius: 8px;
+  }
+  /* Subtle gradient stroke around the start panel — light at top, dark at bottom. */
+  #start-area::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.175) 0%, rgba(255,255,255,0.035) 50%, rgba(0,0,0,0.49) 80%, rgba(255,255,255,0.14) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
   .arcade-btn {
     position: relative;
@@ -312,12 +332,13 @@
     /* Outer ring stays put — only the inner dome appears pressed via ::after */
   }
   .start-label {
-    color: #ffd28a;
+    color: #fff;
     font-family: 'Sohne Schmal', 'Courier New', sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.3em;
-    opacity: 0.85;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    z-index: 1;
   }
 </style>
 </head>
@@ -331,7 +352,7 @@
       </div>
       <div class="score-panel">
         <div class="score-label">BONUS</div>
-        <div class="score-value" id="bonus-value">100</div>
+        <div class="score-value" id="bonus-value" data-ghost="8888">100</div>
       </div>
       <div class="score-panel">
         <div class="score-label">SCORE</div>
@@ -390,7 +411,10 @@
 
   let W = 0, H = 0, DPR = 1;
   function resize() {
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    // Use full device pixel ratio (don't cap at 2). Capping at 2 caused the
+    // browser to upscale 2x→3x on iPhones, blurring rotated edges. Cap at 3
+    // to keep memory reasonable on extreme DPRs (4x desktop displays).
+    DPR = Math.min(window.devicePixelRatio || 1, 3);
     const r = wrap.getBoundingClientRect();
     const newW = r.width;
     const newH = r.height;
@@ -432,7 +456,7 @@
     barMargin: 22,
     ballRadius: 7,
     barThickness: 4,
-    pegRadius: 3.5,    // half-width of end stoppers (used for ball bounce limit)
+    pegRadius: 2,      // half-width of end stoppers (used for ball bounce limit)
     holeRadius: 10,
     barMinY: 38,
     barMaxY: 0,
@@ -445,6 +469,8 @@
     ballVx: 0,
 
     fallIsTarget: false,
+    fallIntoHoleIdx: -1,
+    fallIntoBallStartY: 0,
     isInitialPickup: false,
     fallTimer: 0,
     levelTimer: 0,             // resets each time a new ball is in play (for bonus)
@@ -1013,6 +1039,11 @@
       G.ballVx = 0;
       G.fallIsTarget = (hitIdx === G.targetIdx);
       G.fallTimer    = 0;
+      G.fallIntoHoleIdx = hitIdx;
+      // Save the actual ball Y at the moment of capture so the falling
+      // animation starts from where the ball really was (typically just
+      // above the hole's top edge), not jumping to a different position.
+      G.fallIntoBallStartY = barCenterY - G.barThickness / 2 - G.ballRadius;
       G.state        = 'falling';
     }
 
@@ -1199,6 +1230,39 @@
       drawHole(G.holes[G.targetIdx], true, G.targetIdx);
     }
 
+    // Falling-into-hole animation: during the 'pause' phase (right after
+    // capture, before the bar descends), render a ball falling inside the
+    // captured hole. The ball is clipped to the hole's circle so it only
+    // appears inside the dark cavity.
+    if (G.state === 'falling' &&
+        G.pickupPhase === 'pause' &&
+        G.fallIntoHoleIdx >= 0) {
+      const h = G.holes[G.fallIntoHoleIdx];
+      // Real gravity: y = y0 + 0.5 * g * t². Starts at the ball's actual
+      // capture position (above/at the hole) and accelerates downward.
+      const t = G.pickupPauseTimer;  // seconds since capture
+      const gravity = 1400;          // px/s²
+      const fallY = G.fallIntoBallStartY + 0.5 * gravity * t * t;
+      ctx.save();
+      // Clip to the hole's circle so the ball only shows inside.
+      ctx.beginPath();
+      ctx.arc(h.x, h.y, h.radius, 0, Math.PI * 2);
+      ctx.clip();
+      // Draw the ball.
+      const ballGrad = ctx.createRadialGradient(
+        h.x - 1.5, fallY - 1.5, 0.5,
+        h.x, fallY, G.ballRadius
+      );
+      ballGrad.addColorStop(0,    '#fff5dd');
+      ballGrad.addColorStop(0.45, '#cdc7b8');
+      ballGrad.addColorStop(1,    '#5e5b54');
+      ctx.fillStyle = ballGrad;
+      ctx.beginPath();
+      ctx.arc(h.x, fallY, G.ballRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
     drawScorePanels();
 
     drawBar();
@@ -1255,7 +1319,7 @@
     // Inner shadow along all 4 edges of the wood — gives the impression
     // that the playfield is recessed about an inch beneath the frame.
     // Shadow is deeper at the top, shorter at the bottom.
-    const sideDepth = 17;
+    const sideDepth = 8;
     const topDepth = 31;
     const bottomDepth = 7;
     // Top edge — deep, more shadow up here.
@@ -1270,16 +1334,16 @@
     botGrad.addColorStop(1, 'rgba(0,0,0,0.4)');
     ctx.fillStyle = botGrad;
     ctx.fillRect(woodX, woodY + WOOD_H - bottomDepth, WOOD_W, bottomDepth);
-    // Left edge.
+    // Left edge — subtle so it's mostly hidden behind the bracket.
     const leftGrad = ctx.createLinearGradient(woodX, 0, woodX + sideDepth, 0);
-    leftGrad.addColorStop(0, 'rgba(0,0,0,0.4)');
+    leftGrad.addColorStop(0, 'rgba(0,0,0,0.2)');
     leftGrad.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = leftGrad;
     ctx.fillRect(woodX, woodY, sideDepth, WOOD_H);
     // Right edge.
     const rightGrad = ctx.createLinearGradient(woodX + WOOD_W - sideDepth, 0, woodX + WOOD_W, 0);
     rightGrad.addColorStop(0, 'rgba(0,0,0,0)');
-    rightGrad.addColorStop(1, 'rgba(0,0,0,0.4)');
+    rightGrad.addColorStop(1, 'rgba(0,0,0,0.2)');
     ctx.fillStyle = rightGrad;
     ctx.fillRect(woodX + WOOD_W - sideDepth, woodY, sideDepth, WOOD_H);
 
@@ -1333,32 +1397,55 @@
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#000';
       ctx.fillText(String(hole.typeIndex), x, y - ringRadius - 1);
-      // Yellow light in the center of the hole. Pulses only when:
-      //   - Game is idle (not actively playing): all lights pulse together
-      //   - During gameplay: only the current target hole pulses
+      // Yellow light in the center of the hole. Behavior:
+      //   - Always renders the dim "off" state (faint yellow circle)
+      //   - Only the current target is brightly lit and pulses
       const isPlaying = G.state === 'play' || G.state === 'falling';
       const isCurrentTarget = isPlaying && hole.typeIndex === G.level;
-      const shouldPulse = !isPlaying || isCurrentTarget;
-      const pulse = shouldPulse
-        ? (0.7 + 0.3 * Math.sin(performance.now() / 240))
-        : 1.0;
       const dotR = r * 0.62;
+      // Dim "unlit" state — matches the dim end of the pulse cycle so all
+      // inactive lights look like they're at the "off" moment of the blink.
       ctx.beginPath();
       ctx.arc(x, y, dotR, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 206, 0, ' + (0.95 * pulse) + ')';
+      ctx.fillStyle = 'rgba(255, 206, 0, 0.25)';
       ctx.fill();
-      // Blurred white glare in the upper-right to suggest a glossy reflection.
-      const glareX = x + dotR * 0.35;
-      const glareY = y - dotR * 0.35;
-      const glareR = dotR * 0.55;
-      const glareGrad = ctx.createRadialGradient(glareX, glareY, 0, glareX, glareY, glareR);
-      glareGrad.addColorStop(0, 'rgba(255, 255, 255, 0.85)');
-      glareGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.25)');
-      glareGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-      ctx.fillStyle = glareGrad;
-      ctx.beginPath();
-      ctx.arc(glareX, glareY, glareR, 0, Math.PI * 2);
-      ctx.fill();
+      // Faint white glare always visible — gives every dot a slight glossy
+      // sheen even when "off", like a real bulb has reflection regardless.
+      {
+        const glareX = x + dotR * 0.35;
+        const glareY = y - dotR * 0.35;
+        const glareR = dotR * 0.55;
+        const glareGrad = ctx.createRadialGradient(glareX, glareY, 0, glareX, glareY, glareR);
+        glareGrad.addColorStop(0, 'rgba(255, 255, 255, 0.20)');
+        glareGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.06)');
+        glareGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = glareGrad;
+        ctx.beginPath();
+        ctx.arc(glareX, glareY, glareR, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      if (isCurrentTarget) {
+        // Pulse blends from dim (0.25, matching off-state) up to fully lit (0.95).
+        const t = 0.5 + 0.5 * Math.sin(performance.now() / 240);  // 0..1
+        const alpha = 0.25 + (0.95 - 0.25) * t;
+        ctx.beginPath();
+        ctx.arc(x, y, dotR, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 206, 0, ' + alpha + ')';
+        ctx.fill();
+        // Blurred white glare in the upper-right (only when fairly bright).
+        const glareAlpha = t;
+        const glareX = x + dotR * 0.35;
+        const glareY = y - dotR * 0.35;
+        const glareR = dotR * 0.55;
+        const glareGrad = ctx.createRadialGradient(glareX, glareY, 0, glareX, glareY, glareR);
+        glareGrad.addColorStop(0, 'rgba(255, 255, 255, ' + (0.85 * glareAlpha) + ')');
+        glareGrad.addColorStop(0.5, 'rgba(255, 255, 255, ' + (0.25 * glareAlpha) + ')');
+        glareGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = glareGrad;
+        ctx.beginPath();
+        ctx.arc(glareX, glareY, glareR, 0, Math.PI * 2);
+        ctx.fill();
+      }
       ctx.restore();
     }
 
@@ -1434,70 +1521,42 @@
     const rodRightX = rx + ux * rodOverhang;
     const rodRightY = G.rightY + uy * rodOverhang;
 
-    if (rodImageReady && rodCanvas) {
-      // Render the rod from a pre-rendered chrome-rod canvas, rotated to
-      // match the bar's tilt angle.
-      const rodLen = Math.hypot(rodRightX - rodLeftX, rodRightY - rodLeftY);
-      const rodH = G.barThickness * 2;
-      const rodCenterX = (rodLeftX + rodRightX) / 2;
-      const rodCenterY = (rodLeftY + rodRightY) / 2;
-      // Drop shadow — soft and offset well below the rod so the bar reads
-      // as floating slightly above the playfield surface. Shadow is taller
-      // than the rod for a more diffuse cast-shadow look.
-      ctx.save();
-      ctx.translate(rodCenterX, rodCenterY + 16);
-      ctx.rotate(angle);
-      ctx.filter = 'blur(8px)';
-      ctx.fillStyle = 'rgba(0,0,0,0.32)';
-      ctx.fillRect(-rodLen / 2, -rodH, rodLen, rodH * 2);
-      ctx.restore();
-      // Rod — use highest-quality smoothing for clean edges at any angle.
-      ctx.save();
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-      ctx.translate(rodCenterX, rodCenterY);
-      ctx.rotate(angle);
-      ctx.drawImage(rodCanvas, -rodLen / 2, -rodH / 2, rodLen, rodH);
-      ctx.restore();
-    } else {
-      // Fallback: drawn rod (used until image loads).
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(rodLeftX, rodLeftY + 3);
-      ctx.lineTo(rodRightX, rodRightY + 3);
-      ctx.lineWidth = G.barThickness;
-      ctx.strokeStyle = 'rgba(0,0,0,0.55)';
-      ctx.lineCap = 'round';
-      ctx.filter = 'blur(2px)';
-      ctx.stroke();
-      ctx.restore();
+    // ----- Rod (vector drawn for crisp edges at any angle) -----
+    // Drop shadow — a soft dark line offset well below the rod.
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(rodLeftX, rodLeftY + 16);
+    ctx.lineTo(rodRightX, rodRightY + 16);
+    ctx.lineWidth = G.barThickness + 4;
+    ctx.strokeStyle = 'rgba(0,0,0,0.30)';
+    ctx.lineCap = 'butt';
+    ctx.filter = 'blur(4px)';
+    ctx.stroke();
+    ctx.restore();
 
-      ctx.beginPath();
-      ctx.moveTo(rodLeftX, rodLeftY);
-      ctx.lineTo(rodRightX, rodRightY);
-      ctx.lineWidth = G.barThickness + 1;
-      ctx.strokeStyle = '#3a3a3a';
-      ctx.lineCap = 'round';
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(rodLeftX, rodLeftY);
-      ctx.lineTo(rodRightX, rodRightY);
-      ctx.lineWidth = G.barThickness;
-      ctx.strokeStyle = '#cfcfcf';
-      ctx.lineCap = 'round';
-      ctx.stroke();
-
-      const ox = Math.sin(angle) * 0.5;
-      const oy = -Math.cos(angle) * 0.5;
-      ctx.beginPath();
-      ctx.moveTo(rodLeftX + ox, rodLeftY  + oy);
-      ctx.lineTo(rodRightX + ox, rodRightY + oy);
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
-      ctx.lineCap = 'round';
-      ctx.stroke();
-    }
+    // Build the rod as a stack of axis-aligned rectangles drawn under
+    // a rotation. The base layer is the bar's body color; small inner
+    // rectangles paint the top/bottom shadows and a highlight stripe.
+    const rodLen = (rx - lx) + rodOverhang * 2;
+    const rodCenterX = (rodLeftX + rodRightX) / 2;
+    const rodCenterY = (rodLeftY + rodRightY) / 2;
+    const rodH = G.barThickness;  // 4px
+    ctx.save();
+    ctx.translate(rodCenterX, rodCenterY);
+    ctx.rotate(angle);
+    // Base bar — full width, full thickness, light gray body color.
+    ctx.fillStyle = '#D9D9D9';
+    ctx.fillRect(-rodLen / 2, -rodH / 2, rodLen, rodH);
+    // Top edge — 1px tall darker line at the very top.
+    ctx.fillStyle = '#6D6E6D';
+    ctx.fillRect(-rodLen / 2, -rodH / 2, rodLen, 1);
+    // Highlight — 1px tall white-ish stripe directly below the top edge.
+    ctx.fillStyle = '#FDFDFC';
+    ctx.fillRect(-rodLen / 2, -rodH / 2 + 1, rodLen, 1);
+    // Bottom edge — 1px tall darker line at the very bottom.
+    ctx.fillStyle = '#6D6E6D';
+    ctx.fillRect(-rodLen / 2, rodH / 2 - 1, rodLen, 1);
+    ctx.restore();
 
     // Top posts go on top of the rod.
     drawTopPost(lpx, lpy, angle);
@@ -1512,8 +1571,8 @@
   // to the rod) from rod's centerline. Uses the bracket image (chrome cylinder
   // with rounded top, flat-shadow bottom).
   function drawTopPost(x, y, angle) {
-    const w = 7;             // rendered width
-    const h = w * 3;         // 1:3 aspect ratio matching source image
+    const w = 4;             // match bar thickness for consistent treatment
+    const h = 21;            // preserved original rendered height
     // Anchor: post's bottom sits 33% into the rod thickness from top.
     const postBottom = -G.barThickness / 2 + G.barThickness * 0.33;
     const top = postBottom - h;
@@ -1522,24 +1581,18 @@
     ctx.translate(x, y);
     ctx.rotate(angle);
 
-    if (bracketImageReady && bracketCanvas) {
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-      ctx.drawImage(bracketCanvas, -w / 2, top, w, h);
-    } else {
-      // Fallback: drawn post.
-      const r = Math.min(w, h) / 2;
-      ctx.fillStyle = 'rgba(0,0,0,0.5)';
-      roundedRectPath(ctx, -w / 2 + 1, top + 2, w, h, r);
-      ctx.fill();
-      const g = ctx.createLinearGradient(-w / 2, 0, w / 2, 0);
-      g.addColorStop(0, '#4a4a4a');
-      g.addColorStop(0.5, '#f4f4f4');
-      g.addColorStop(1, '#3a3a3a');
-      ctx.fillStyle = g;
-      roundedRectPath(ctx, -w / 2, top, w, h, r);
-      ctx.fill();
-    }
+    // Base bracket — light gray body color.
+    ctx.fillStyle = '#D9D9D9';
+    ctx.fillRect(-w / 2, top, w, h);
+    // Left edge — 1px wide darker line.
+    ctx.fillStyle = '#6D6E6D';
+    ctx.fillRect(-w / 2, top, 1, h);
+    // Highlight — 1px wide white-ish stripe directly right of the left edge.
+    ctx.fillStyle = '#FDFDFC';
+    ctx.fillRect(-w / 2 + 1, top, 1, h);
+    // Right edge — 1px wide darker line.
+    ctx.fillStyle = '#6D6E6D';
+    ctx.fillRect(w / 2 - 1, top, 1, h);
 
     ctx.restore();
   }
@@ -1548,8 +1601,8 @@
   // to the rod). Uses the bottom bracket image which has the flat-shadow
   // edge at the top (toward the rod) and the rounded end at the bottom.
   function drawBottomPost(x, y, angle) {
-    const w = 7;
-    const h = w * (203 / 127);  // preserve image aspect ratio
+    const w = 4;                    // match bar thickness
+    const h = 7 * (203 / 127);      // preserved original rendered height
     // Anchor: post's top sits 33% into the rod thickness from bottom (i.e.
     // a bit past the rod's centerline) so it overlaps the rod slightly.
     const postTop = G.barThickness / 2 - G.barThickness * 0.33;
@@ -1558,20 +1611,18 @@
     ctx.translate(x, y);
     ctx.rotate(angle);
 
-    if (bracketBottomImageReady && bracketBottomCanvas) {
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-      ctx.drawImage(bracketBottomCanvas, -w / 2, postTop, w, h);
-    } else {
-      const r = w / 2;
-      const g = ctx.createLinearGradient(-w / 2, 0, w / 2, 0);
-      g.addColorStop(0, '#3a3a3a');
-      g.addColorStop(0.5, '#d4d4d4');
-      g.addColorStop(1, '#2a2a2a');
-      ctx.fillStyle = g;
-      roundedRectPath(ctx, -w / 2, postTop, w, h, r);
-      ctx.fill();
-    }
+    // Base bracket.
+    ctx.fillStyle = '#D9D9D9';
+    ctx.fillRect(-w / 2, postTop, w, h);
+    // Left edge — 1px wide darker line.
+    ctx.fillStyle = '#6D6E6D';
+    ctx.fillRect(-w / 2, postTop, 1, h);
+    // Highlight — 1px wide white-ish stripe directly right of the left edge.
+    ctx.fillStyle = '#FDFDFC';
+    ctx.fillRect(-w / 2 + 1, postTop, 1, h);
+    // Right edge — 1px wide darker line.
+    ctx.fillStyle = '#6D6E6D';
+    ctx.fillRect(w / 2 - 1, postTop, 1, h);
 
     ctx.restore();
   }
@@ -1584,20 +1635,21 @@
   };
   // Set static ghosts that don't change.
   panelEl.score.setAttribute('data-ghost', '8888');
+  panelEl.bonus.setAttribute('data-ghost', '8888');
   panelEl.balls.setAttribute('data-ghost', '8');
   let lastScore = -1, lastBonus = -1, lastLives = -1;
   function drawScorePanels() {
     const score = Math.floor(G.displayScore);
     const bonus = Math.floor(G.displayBonus);
     if (score !== lastScore) {
-      // Ghost shows full 4-digit "8888" but the live value is the raw
-      // number — so a score of 0 only lights up one digit.
-      panelEl.score.textContent = String(score);
+      // Pad with figure-spaces (U+2007) so each digit aligns with a ghost
+      // slot. Spaces have the same width as a digit in DSEG7 / tabular nums.
+      panelEl.score.textContent = String(score).padStart(4, '\u2007');
       lastScore = score;
     }
     if (bonus !== lastBonus) {
-      panelEl.bonus.textContent = String(bonus);
-      panelEl.bonus.setAttribute('data-ghost', '8'.repeat(String(bonus).length));
+      // Pad with figure-spaces so digits align with the fixed 4-digit ghost.
+      panelEl.bonus.textContent = String(bonus).padStart(4, '\u2007');
       lastBonus = bonus;
     }
     if (G.lives !== lastLives) {
@@ -1646,8 +1698,8 @@
 
     // Ball center sits offset from rod's top surface by ballRadius along
     // the perpendicular direction. The rod's visible top surface is at
-    // distance barThickness from centerline (rod is rendered 2x thick).
-    const offset = G.ballRadius + G.barThickness;
+    // distance barThickness/2 from centerline.
+    const offset = G.ballRadius + G.barThickness / 2;
     const cx = G.ballX + nx * offset;
     const cy = rodCenterY + ny * offset;
     drawBall(cx, cy);
@@ -1686,6 +1738,28 @@
     rctx.imageSmoothingEnabled = true;
     rctx.imageSmoothingQuality = 'high';
     rctx.drawImage(rodImage, 0, 0, rodCanvasW, rodCanvasH);
+    // Soft alpha edges — fade the top and bottom edges of the rod's
+    // offscreen canvas to transparent so the rod's edges blend with the
+    // background instead of ending in a hard pixel boundary. This builds
+    // antialiasing into the source asset, eliminating the stairstep
+    // artifacts that appear when the bar is rotated. Fade depth is 24px
+    // of the 96px canvas — about 2px on screen at the displayed 8px height.
+    const FADE = 24;
+    rctx.save();
+    rctx.globalCompositeOperation = 'destination-out';
+    // Top edge fade.
+    const topGrad = rctx.createLinearGradient(0, 0, 0, FADE);
+    topGrad.addColorStop(0, 'rgba(0,0,0,1)');
+    topGrad.addColorStop(1, 'rgba(0,0,0,0)');
+    rctx.fillStyle = topGrad;
+    rctx.fillRect(0, 0, rodCanvasW, FADE);
+    // Bottom edge fade.
+    const botGrad = rctx.createLinearGradient(0, rodCanvasH - FADE, 0, rodCanvasH);
+    botGrad.addColorStop(0, 'rgba(0,0,0,0)');
+    botGrad.addColorStop(1, 'rgba(0,0,0,1)');
+    rctx.fillStyle = botGrad;
+    rctx.fillRect(0, rodCanvasH - FADE, rodCanvasW, FADE);
+    rctx.restore();
     rodImageReady = true;
   };
   rodImage.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAIAAAAaCAYAAAAt6v5QAAAsk0lEQVR42sVdS48cWZU+ERn5qCyXq7vdVBtbauMGeWbBo1mBGvVyBkYIsWXBzPwM/kz/ADawA3YICQ8sWLSEWj39EAiBu9Uuv6tsV74icxbum33r5PnOd26EzaRkuaoyM+LGvef5nVclIjIej2U+n8tgMJDvfe97m7feekuOjo5kvV5L27ZycnIim81GNpuNiIgMBgMZDocyHA5lMBjIbDYTEZGqqqSqKqnrevtzVVUyn8+330/XyN/P/2b9X9e1eK+2baXPazweu+8vl0v3/bquQ8/X9ZX24f/rtV6vn8t10PmuViv4XuT+bH/S+/oc0t8jz+edb9/nZ/SxWCzOrUM/83A4fKHrZ59h/DcYDCj/9KG/vvzB1sf4n91/NBrJer2W9Xp9bv/rupa6rs+d74tYPzsftn5Gn+z+7Pt9eYg9X077Fv0z+mPrXy6X566n/zH6TfdP90H/o+dPOgY933w+78V/TdO48rOvfhsMBu76Gf9F+NfTL331H9P/7Pt9+Zd9P6IbPP3E1s/Wx94fjUa91s/kZ9/9Wa/XO/xWqvv70Ndqteq1f33l/z+L/rpen+1PX/+A2Vcv2j7pqz/Z/iT5/qLsg66+TlS/9LUf2fOz/eu7P03TUP8xYr9vNputjZn/u3z5sgwGA3n48KG899578sc//lE+/PDDar1eS9M0z/yvZ1cV+f4PfrB5++235fDwUP7+97/LgwcP5OzsTPb392Wz2Wyd+3wxyZDd29s7t4jc4NUHZR10YtT82hoI0BthbYb1nj4MS+nl76V/+fvJUGFOZnp2vba2bXcOJ19fEnTpu3qN7P759zShIINS77/eW2sPEWGPRiPz+fL9RecXYXjPUNT0kTO9Pn/0fJquLfpL56PXkBSFZ7wzg75pGmnbVlar1Xbvcn7TggLRMNpfJrCYIMsdFetZPEM4p9G2bbdGVXq+5wGMIfqKOjI5zVjnlujPcuSfXWO9c85aznn8W1WDnb21HBbMxxv3LLV825WdcSDToinr+ow+PYNaP2fij6QnNH9YSlDLBw9Is/ZYn3/UUbd+z/kDPbtFX/r+Wq9q+WuBTXr/kXz39JdF/+m5IoaKlu/I0UT8me6Rnk+vX+sHff5M7lnX1/Sfr7Vt2+1987PJ9yeXb+n8889o2ejpP61fd+XPF+uy7CLr/BF/s5/12tM6LBvKsv8QDVq8m9aW01l6xvxv+flZ/Kz1kyUDPP7I+b9EvuXn471vARn52tL+MZvW22PvbMfjselERANxFm3n55fzp5Yd+dl7MiJqv1vPl+wzpL+To+fZl+j882fQz58+r+1DzT/J7stpON+fXH5Y8jWXz5ZdlIAMRP+IP/XPWjZ69qEGUqL8Z+3vcDg851vq87OAYs9msXgtYv94djx6Bv38OQ3kgVDv/un5Lf1k+eVa5iQf9PHjx1LXtVy6dEm++tWvyi9/+Uv5n5s3K9mIVHt7e/L9//jB5tq1a3JwcCDD4VDOzs5kOBzKcrncKiFLoadFPH361HX2GCLCDMncEbbezxEbi5FzRkCOsKcMPCWdMypidg0EIEPGu0/k/uj9/PmsZ7Pun6/fikhHDGXNCPn3Ioa4FjSWIGSMrBFhSwhZigpFjyz6swSwflbv2lqR5ErAciT0/un9Z4h4qQOuBXkk4moJcq0oo4grMkQ0kMbAEHQG7P6WIXj+GdYu2Mb5c+PyP5MPTVNTWeHJ4AREeErSox0mP5EjE42YakcrAdAIKNQ8jvQDAoqYo88iVp4hYAGVg8HAdHLTdaz9tQx5tP/MUU/Pj+SrNkS1sW85U8wRZ/ol/w4CmlGgwJIxESDAAnCQkWeBOAiEtgxlCwhAOpE5IcyRZkCA1g+IhmwQs6LyxpN/1v5rmsr3WgPJKAiS/y3nb+RoRoAoZhsiBxrpj/Q+ynjJr494ScsUpD88J0/bP4gPIkCdtUZPPuu9tc5Hn6f+OwL6LXAKOdIsUOD5H3Vdm0Gi9HPK2ECByuVyGQZqrWtYQHP+HS+QGrEfmYONgDIULEX74AGhnn6ygNSSLAUGBFgyJn+ljHJ0f8Q/Fg+w8/WAenT+6Xs3btyQuq7lt7/9rdy6dUteffVV+eCDD+SD9/+3an74wx9ubvzrv8iFCxfk6dOncu/ePbl9+7Ysl0tZLBYyHo/l0aNHUDhXVWWm1uefR4IuLdyKqGpHNpImiYR8/v0SR1kbWuj7OaLIUj8QIuSBI3nql6Us89R66zolqa/W9ZEitz5rXTOPVEQjvCwjwFMkJWl8m80Gnp9W6IzeSoWoZUQjA9vbNyv1Ld+PpCjROqOlEdgRbWhE24pURukTGRhRMJE54uxvPDWZRy18+mogsBKRj+v1ylWCLEugqgYu8BnJ2EGOqmXEWdFAD3xrmuacoaWBMgvoiyhiL7NEZyR430uIPtpj7aijqJamcw20IlpnqY1eRogH5EQc7QjQH4nIRyOZzGEqBQGT/raccG3oayc0nRmLyLDSDs/5QfaBlXFkASAaiLYMXZQ6nQd8vP3Lv98ly0vvgd6/tm13MgDy4ADalxw4xNlY1bnUf2sPWCCA2QGe/cMAqwgQG9nfaJDJelb2N0R/af8toBFd1wPKPPvXsx9Z6YQ+4xL7Wb9vyUhkX0UzLiKp7R7AwgKVTC+uVqud7COduRqxU5Ejre3riM2pMz7QdyL2ZTRjzgtEW7rMyz7Mr2OVBlj8H/EvrT28cOGCLBYL+eyzz+T69etydHQkw+FQPvroI/nRj34km3a9ab785S/L7du3ZX9/X77+9a/LN77xDbly5YocXjyU2XwmbdvKZDKBAqySSs5mZ1BBRSIm7EG91LJIGggTJNHIgSccI0SMECEUwcgZOXJ/9P1ojSp6RWqsvOiQNhw1cXuIGco4YOCBdpSj+8sMLusZ2f4yAYnuoSOCyJBMhgzaf+v5SiLyniOKnctdIMkyqiKCmq0/d9S9iEgJfXvord7f0ahx9waldH/B/xVMMbNSC3dpxi9DSc9vOSgJCPBSMSOpg14knUVcIsAgKz1Ba48AnTpjzEth7GqoIZAyB6oZeIJoxCq9i2blRUo7rIhq/gzI0fH2j6Vlnwe61m4ZCYu4MPmrezxY67ciucjR1AZzrn8sWvVACK2/GI1bmQq5/POiy131V1pf1CEtAQJ0lpzWKV4mRAJvIo6AJ98jz8LOx8tAyPVvFDSzeKek3CkCSGhHkgXC9DXS/iMgNZoRxux31uNrPp+7OiLXj9b565IbZGPldKcBq1KfAtlTHrhp8QAqzUCBJIuGFouFNE2zvU7SV1ZZUJRmoT9pnM9oNILBjBTI87L5oj0Q2PrRui35rANYXqkW0sE64wGdPSo9TH+bzWayWq1kNpvJrVu35M9//rNcvXpVfv7zn8vHH38s3/nOd6R5+PChTC/sy3Q6FRGRDz74QH7/+99vUaCXX3552wwQGTLT6dSNOlmp+VHkXh8kAgK6KCIUcSk15JlxY6WuIOVvMUIkYuIJ8hLE07qX1Wwqgm5bEbwSAYiAAMbI+nNWbVN+PnlqqvVce3t7riPFHAbmAFlCEGVUeAqB0U9XIMBKbSsB8ixDLwdRSpoNRXpWRMBBiz6QMskzKqwzSogsui8rzUHAlpXaiiIKnvOb7y9LFbfWwIBcVBpjRdSjzjWqT0YZHx6CzmrQUY8PLyIW6YHDgCyUsebV7VvrsPjHAgJZxhPiJYv+rIgwAwK8TBnmaOgmxPn3IoCSZ+Rp/aD5IzmTVj2mtS+5AadBWmtNEfvDK8Vg97euzwIhGoh4XsBBJLqsgZS6rmUwGOycVTqbXH/ltJz4SuuvUvmOSj4sPrK+b/WNyN9PQDbaH5aRmOyzkuCWF5HVdMXkh16/BmJ0RN7KFozYTiUR44ijqWvo0fkn+cNKoTQ4ZQEBXqAS3Z+VYmn9oeWUlxFk7b9eY5IheS+CPDvKA9o9oCfyfCiQZwHhCPhnQACjb+T/Wb1SLPo6Ozsz+SN9LvneyIbUzUoZwKf12Hw+l8PDQzk4OJDj4+Otz/Ptb39b3nnnHfn+v/27NIeHhzK9sC+vvfaa3LhxQ65duyaTyUT2JntyNjvbClIL/dKOJKuZYhFfEZFKKtnIriHnCYF8PdZGodRihrhFCSVam9IldUzvT5fSAC+aUipoWRqb52h56UieoGDOn1VDradcRFL/UobLzvmsW+ikRQy5EICS3Xcju0CAV+JgpSYhoCdiJEcNPKuZDnO0LWHOuvKy1FPG3wyk8VKvtSHuOcpdaZoJ+UE92NJFLie3z79Zhw1xL5IYAQpL+D5qqFmOKAIyrDr7yPXZnngyXAMZkedi0TkUsbeMQQbU1lV9jjZKDOQIr0cc+dLXuehu5dPXcrV0mw+WlMJ4QAACyhKP66aNyfjT8g054ojGLEOVyX/v2a0U3gi/ekAA6/fggbGW3YiAIgT0JBpJujHRvFWbrYFm7YgiRxfpD+2IMBBe27AoYh5pfL1j3yr7ZCMbmrGJHG3vTPX+sIwdLyMjj9izTNmSNPMoEMsc7Uh0GIHlln2gv+vxj/af0vnmNiCKLOf06XWbt+wzq8Ye8X8CQi254pW2WBlDns+ErsX0w6r1S7O72i8o0BF9PgtotHh4uVpS+vXoxyofsmy9J0+eyBtvvCGTyUROT0/lH//4hxwcHDzL+BiNRtI0jVy6dEmuXLkiBwcHMp/PZbF8FiUdj8dbQrMW5P1dO0roYXJE0RJEydFDgjql/qBOokzQo26YUWNCd4X0ENOocMufJTUT8ZBOz7BPiLFmiPTcOSLqKcIS5snX7yF2kX1mEV+PUSM9ABaLhSvU8mYg1hmh1HSvJ4BWBFY0Ku0dWl/OH16dNRqvFDXkUUQwrVFHJCxE1ouwsvFmDNHVQJrF/578QBkhlqL0DJGSqRj5eryu0VVVyUpWrlESjf5Y9bS6Ph0Zeq4iJoZudCQQosNcvltGvwfUej1cUI2mXi+rQY0CpBG5ZhnjqMfN1hCR1k1FZo4CMpRKSpqiNZamfmuX9DNeijXrIcLOK6dfJLvziSceKKQDHzp93QKfNX3p52BAKKrRjqaNIzDQSk0t7dtgRVStptOoEZgOJumu6rpHg5V+m6eGo+eOZKRE6vkZ/1uf8UpTdOp6qSOTT1pAn4+m/kd7eFilMV4AKhqo84B4zz6Nju9E+hvxp9YviHYt/yW/Tz7eFJ0f6h9iXU/rQ20PWRH/aCAmCo5YpasRUNyybZJ+KAmqlDxfl5fVrwQFCbR9q3ldA1leQAtl5VvXzn2Jtm3lpcOX5OnZsz6AV65ckatXr25B0qaqKplMJjIej6VpmnOdhPXoHNR8DUXktSBCAtESdKxGSzsKEUJDzKbHs2jFEOmaqtetxw96RrvuSqr3OzLH2UqTTN9PNTYoNYrV8rBmXt74RjReCGUHRKJskXIJhnJrGka0rRE3ixeic8A9R940kD5HQq2IhJX5gGiINTsraRZo/V0jnvo8rSZs+Wejzc48sMxSIExomoi8SvGqpNqCojCimQENXtd2694Wf0fm0CNHAmU0RUaDRpr5Wbyf0y9DtK09YF3T87Rs7UDUVS3tunWboSEgyDJULFmDMn5yIMdLUbcMoVz5R+YUI9Tf0gPb5/5cfvRtRoWAElQq5UWvPKAY6eposy0k+3WNsf6cPl8ENmh5rYMgCHDQzRY9/rZkGqszRgAZ0u9I53oGNcu4tPSijoii0g7d+M/r/5HztO6m7Y0l8xxtDVRbfMeADBYx9PRHoj9UOuDZj9a6mayPAAH5ebHSNt2nAdmF3h56EXsEhDCAryRjycsQcPWz7D5jTs9eWbHVDBjJD08+RKYxaHtI629vXzVQFwmasv5Xln+B6DZlpKM1ej20SvRfaekJ8zHSS5fGaz6wgGhvHd5EGMuH3ZZVbZ5ldly9elVOT0/lrbfekt/85jfSNI00i8VC9vb2thuemntsNhsZNkNZrpYybIay3qx30FhtBCBCGDafb4SoBWdpMJ5QYAhYNELjGWpo7KHlTLAJBlazNE/pRrquW4zgjTuKIKvakfUMwegsTS/SgBQSUuKW0YIM4BIG0t/TNcJe3aX1jExQeDXCXlfQlPKdG7o7xn6g0SFqdoMMbdSjARkX3tQNS9GU8nKk2Z+FgmrDE11f0zdyHCKRXus8UB2d9XwWiGLuv9hzpnd4JEtTjTiCOgUwb7aFZHJemuM9nykPpNrSOZKn1hz77d7LBnavR3Jbv49KUzQgl/SX5nsGZKXSDq3rvB4KnmGr17i9fnW+fMTSq56jz8bLIsDRa4pUYpBHyi48IDoSxSmxCyy+tkAwy5m1onIWDXo9HpAtwLLz0Ji6iBFvOdZWMzUWMUSlc9Yc9wQkRPSE10wXGfIIyGKBIjZeOa2flcYhu0NPLUB2EusBoktTrAkLXldxZt+wQBB6Rt1sFO2NpW+jHduTfNWyjgV9SrIqLPsIBd2Q7es5xXVVb2W35R+10hYHtyw69XjKs7kT6KZ7laBscM8RZ40CrWwqb/0R+5C9LPlkjQGNgB7eZB2rFMpqprn9rtjjGb2gpeWTtG0rw2YoT8+eiojI2dmZtG0r9+/fl7Zt5fHjx9LMZjMZDAbbES2r1WprWA8GA1kulzLYH+wYyihiYkWRc0Y998CyMWuySyKSVsRJE3KkRh0hqx4S5dW7MEdZp8550WOd+qSZN50XclpYDVNJjQx71sjvJYggylhgM5c10KARtPzFIqpWRCrSPZ3RTQlajco/dOqdB5p5vSIi5+MJP+aoRwSph/h6Z2+VViDD1bpXkk9aCeeOn7duNsc5Ks+8zIdI2nROJyXNorwUWYtvPHAO8RikMdnAZqr62SwggM0yj4zfYWtdrVfud7pMZYk4pV3pS+9nl5FjJRHG6D0goJYCApX9bHlpXRcaz1Ovk1Fb1/UXhnZAPun76nT1vFGYdnKYjIyWyln3zrtWR/jb+h2lJnsRdmbnsEkUXWZ+o+ZijCaYDEDnj+aUowlInqPrAQGMV63z9Sa2eP2StAwvHS9t2aC6gWPpuVpjU6MjFXfqrqtdOmOlrSVTw5C9ydbrXSP1oPJ6RkTswwjYFfGfmMzRdMRKs6JToSIBuJKSwuj5elmmpfLJshetjBnE+zuBLCE9K1Sgx6LrFMhI90ylCpPJ5Jnvvt5Is1wupWkaWa1WMhqNtsjPYDCQSiqZjCfbZgZWSldd13SOM+vazA7XQ8yRMavT+pAjGOkSnddosuZ7jBC9TtQoqhdJHWEND5kgiAIBbO/7GjrR70dG5WhFjyKaWpF56HYJIBABTLoK+8i0AtQV1uKPiNC0eKykQV5UUFuC1Mu40YYsE+w79D1YuzW2LDV5UA87uFdxQwQBUdu9kEHuWX/+fokiXJnyMjlOnqNk7Y9V0xZt1mbRaLQZGXJ6+gIBrIYx0qzLo3fGf6GRnbKBhkhXR8tbf6QJcPoMq1FmXZm1/o44d1bEB3WBjugny/nI12FNHvEyxkpS8y39ZDmKVuTTqtH2bBJPPyKbyXKIWcNoK6W5VI/kGSmRkkA0ZpcBcp58YlkauSOqMwdQSQTKpGGlHci+tVLH9VSMqPzq0qyXlT6VNKW2ZE+p/aqvXTpemEXQrUBGqX3FSoe6ALle9gBy9DebDQQKvYxW9PxIPnulZZEePX1eutl6pLFh/rOmH83PeaBXZ+xY8kL3CLP2Lw9+5ddHNlbbtjIcDmU0HJ3r6fX48WO5MN2XZjAYyJMnT+T4+Fhu3bolbdvKw4cPZbFYyGq1ksFgIOPxeOv06wOs6/pcaiWag9s1SiYiZo2I54hqYc+6qludZ/ND0XOUrVpiS6BFanAjERcUsUbNfJCh0FWQRCLOrAaNoWilQBFz8vLv5M1+vHNBithKC0Wp5F2cX6aIkKMbSXnTjp1FH1Yzk/xn1qOiazOyEoMvAhx4c1Yjihw1m6KKeFOH5BK6d1VvQsASBDg2dSeA7ouIxNIcjZbke3RqQ0QOMqPW4hNdY615lQHNTIZo+ojybpT+GX9bQG9J01q0NtTsKmqQRxySiKFsZeRZ8hU9h54DrmV0NCMD8VbXHgn593VGQJ723nW/rdIuaw+sZnZsPKw3vlg/n7afrOf3IopMX7H9Z/LLsu9yuZLXOFvZBKzGHwViUHq8fi/PSLE+r5sBR69rBdpQOrJn35Y6wp48smw2VjpV0szN2gvWbJO9x+wTJD+j9mcpfaMack8+If7MmyWzWnL0DMvl8pz/l8s4q2wYAQFeVqcnC0vB8S7yg/G3Ba5ZQLPueZRP1bBkLOuJg4D0/F/erNzik9RwfG9vT0ajkdy5c0fqupb5fC63b9+W/a9cl2Yymch8PpfZbCbz+Vy+9KUvSdM02waC0+lU5vP5OULQGQGshiiKCKLfc6ChJO3acpQRIXgZAXp8Ys4ElsCNPCuKaHpp8IiR0BxaFF0rZSYWEWX7H838KGn8hwQ5ygjwBAtLHUOK0kudL9nfKBCA9jvSr8EzFHNBwpqtWPd6nkBAdKQPaxrIogwMwPOa/O0Yveu4ojLXUK1hZMTa/x2+WvtpgJS+VvNzsiyfEYwmUngRNWtsWCn9lBgKLLrK3mcZZ9HML/SyegAgQ9GSQwjoYLzgGQooosU6/1vvR+ess1p3VA+vp3qU9h7QEfOIIRXhH+2IayM5emZWRNubisDG0JUCgZHSSs8ZtewrrzlwqZ5kvY8Q0KSBADQdqm9qswei5I4UKg3Q9lsECLAaBiMgwKtR7gsERJpN6/GNUUc7ouuZrH6RLwZkRfmP2b1M/ls9fDQQkK5j9Q5hMiqVjaP+AwwIYPaPBeTl12T+X5fSvD72Z2RSTH4euseOlZFk9bhKn9WBQK+fiCVHlsulrNdrGQ6Hsl6v5eTkRJ48eSJ3796VTz/9VK5f+8qzjIDT01M5Pj6WP/zhD/Lyyy/Lu+++K48fP94uYH9/fycVJ1/sZDJxa8e9GrZIzUek2VdpxFATkpemYc0B1hGpyExjr+uqpyijiCVLEe8qPPvUNzKnyzPoolExa3+8kRuILlizH+TsROr3Spq1IEMNpXKx1EYrohTZZ6SIvFE4XRBZtv/WVIaSOdohZ94xphkgVVeN6whTIKjxnVbalXrlZxSgZnhb+dEu3NS/EofYS51DzjzLWGKyFTUjQ/JdX4PJD7YWZkh7ZQp9anTz+3s0F3G0GD+hmu+o8e3RkS4t9Bz9Lk0C2ff79PVAshIZ2SWy0uKPCODiAXFR/e+VnmlaiDQpRgBGRP8x/cvu701ViAQ6mKPrOfF5aQCKAkbGVzMbzsto081qS4EAVhrK5Fe0WXAJ0Pm87Itor5EuPTg0/3WRzVE55elNqwZf20kMCPB6XDBbkMlsPVVE+5ml421L6Y/5J1YgwysXKM26QI0S0zVYxkseaLAAgrquZTqdymg0kul0KoPBQCaTiZyensrJyUlV1/WmWS6XslgtZW9vT/72t79JXddy69Ytefr06ZZAnjx5YhowCWVNXe89IKDEQS9lmAhi5AnzPHXGIoySOmjUbMt7Zj1+DSHeJYIgXzfquskcDc+4LzU0vNQa1rWapUt3NXTS/9HxdUhgRFOLu47H9CJzkXnyVmo3en4PcUVrLk39L1V0jA7yqQ9W13t2Nhb/e+O3dvZ3xcdGevQ5HA2oAR0FArog4htpXcfVK41B8snjb5bNUQqoWPSLUu2is4cjfB81NFBXdXY+Uf1ozcEuaabHgIAIQN/FwNf6GxmRkdRYJl+82v3n4Qj1AQKiPWKY/Ix0w7d41NJ/DFiy9B/LCEA6LGJ/ePaN1UwZ1c3rNXijQyN86I0WZBFDD2wtsTmZ/WpNDShpFsjo2BpvV9KDg9lPEUfTu1/J9UttFkYzXi+VaHabN1XIe74+zSC1/+EFSvL1dZFljP6ZDI129e+qp0qAIsuOTD3mrJ5glt1q9ciK8A/KqEslAffu3ZPRaCRf+9rX5Nq1ayIiMp1ON03TPJsacDafyWQykbOzM3n99defTQr4HDXQ6R/WnMw89ccy6FINFFJWbI4lM9QsIMKbGmAhRl7qFKtTYYaU1UwRzbBHysxjDmv/vP1lCi7KMFbEkSkA6xpWxkUUideCLhr9tQwR1nm1xFEoQR6jgsZL0e1qXOb7F+la/yKAgK5Ir7U+bZSntDYmX6JTHUw5sK5c+kZAy1bRN1XIkYZnvKl77Wc9OC8j0/3att02jo0qUM9QYXSLlGTXiE+0RwvbL+aoR+cURyNaUUMARZxQamkfIMAb4coyxkrHF7LSGH19BuTqHjtd9oc5RX1KAxhQWELHyMiM8Cxahw6kMGCyBAjQqb8ekIZGVqPSG50ab6XgsmzMCJCPgACL763UXy+Q4TkPuaPIUv/7BLqi9Fc6h53xN8soy+1Hz1Zm43u7OpIowyNaGsf4LgoEaPpHI7CRHGJAXt5jQ8u2fLxwVB4hGYp4itn3pc0iI+dc0mfCAvpyvmU9Aqyxn8wviPgPeWnAxYsXZbFYyHQ6lWvXrsnly5fl7t27W/ppbt++La9/5ZpcunRJ9vf3ZTwey+HhocxmMzk4OJDlcilHR0fmQUWcBIsRLccmij5aNZCRrp5RRWsJlBRxZGNzSiKmKDUH1UB697cYJTqayhPYbARJxBgs7SofqdHRzRpLp1KUIsAlUx8i0Qx93SQokMCwDLGcTjz6j3T2t6Ii3vmgeqXSc2cGWNRQRzWsXcandUnf04qaReiiPKoNYTbnPeJcW/dgEetoaRaSUazZpKw34TRiqzHqpvLlho6Y6TPSzZR0rV7qEcPGAEWMO4uHWI8ZBtQxpzPRh1UjaslPvT7WbCoK0IRAtcJSwcjUBqYHrIhm/nNpjyNNFxEgoSv4FekhUZJx1xe4RaUN1t6g1FnPnirVvx4dej2k2NSAEkcSBamQTcyaLXujAy0bWffA8FKLPSCmq373SpeiGT/eXtFmuKAHjVeaht73ghAlYGh+HxQIQ/zN7D9kn5RkXGoglTU89q6t9Q/iP3R9BBRHS13ZeFALaEKlhdGSai+Q42VZWYB7nlFg0b+mX73XFy9elAcPHsjly5dlOBzKbDaTJ0+eyIMHD+To6EgODg6kSYR2+/ZteeONN2S9Xst0OpW9vT159OjRFhTISwE0ujqfz11DzDJkS7pCooNmDROsiECJoW9F/LsaPNF0p5KGZlHHNlpjyJDeLoZEtAbQEpglCLwncFFErkuNqZd6jPYBKVpvPjMCWbw0qtKMhvRizbKQI8eQ5lJDqY+h6qWWl0RsrftFu/4i+cYc4WiD0aijWQqERVLvWEddb3Y1dcSkgoo47Z92ZPN1rdatC1ZZqfMWj6HxkdZ4IwZma9nv0bgXkS9xDllKOAICWEYAG++Uj9ftAqQyILlv13F2f9assTSjQdMWAvKijjrTzV4PDGa/RB2ZLqB5FCjR9INKk7qCu17pScQ+Yo5qSTNja0+s8cYlOpZN3YgCZV3B8b6p16wZYGkgsYRO8/1htrfXY8x7du980PdZ7X0JEIDke7SBeNdMOs82L4n4R4AK74xZRiUL8CIajmQso0Bb/vt4PN4J9qKpSGy8okWrqbR/tVrJm2++KZPJREaj0XYIwHA4lGY4HMrp6ancuHFDhsOhfOtb35LXXntNPv74Y1ksFvLo0aMtAIC6E164cCF0ENHosGfURYVYCRBgNVvw7mGlRrKITp8meZEZkaWIeaQuzVPqfUd6RAwh6302hqOkmVXXkgiEKDLnzTtDz9HoktqEFEqJs8noN+pIWog0imh2iciX1Hh3MXS6NJvxatSjDfi81MCSjB72zNrR0tfRzUgjUxrQ9U1HcOMr2xzdtvijGQ1DNc0IaLCiLdZ5eYh8NNrSxaDVjkrplAw92k4DKZb+QECgt0+ervH2h41fLWnmyBwxxJ+e3u9aWuHph/yzrIdFCQCJ5K+3/y/CUSxx+HKgidWwd8kIsGi0ZGoAA8pZaQO6vjX+0ftcFPAtnYPeNXXdc9TR+5GyPJQRi2ynPjX+kYyErgGQaI8fNsqTObpdxqeW0Bcdn0xsLjT1x9Ofnp+k74GA4nz8offc+Xh6L1AQod+Iza/PPa0PBSry/bH2L++RZY23Pzo6kqOjI/nud78r0+lU7t27J7/+9a+laZqtbdWkizx69EiWy6XcvHlTrl+/Lj/+8Y9lMpnI/v6+G/mxugpHDOX8Zx0xQzXuSCAwRVZi9Jc4V15NHAJCShAvT1BHIg6ltW/eVIPSRholiDFjdLR/VupvaQpPVGlEIyoMCPIUGTNUur5YRNxyBCxHzuN/j59QapfF/6z0JcLT0WZ7kfMtfZUqEuToW0BESTPNSJ1eNEqDwAsvta4IDFv7zRZRanr6v24GLhAYzQjQ8j19XvegsQx5BhRGm/F1AYoZkICmZ+iIDOMbBoRaYI1niHYpDbToqqRZYBcwOJJxELV/okAp49toRkCeUdE1I6kECEDNfNmYYFQXG+kh9Dwjol3Ov0tqvb5+l6lReipC1K6K9HiKyCEWMNHjA72pMVGdZdFINGOoazPq0r4uXkmLRXuaP7VtyIAK9mKp76WBndJACLLPrYi9RUPj8ThEP579xORnCX33sQOtPdMZS/p8LKCElWXnev2TTz6R4+Njef/99+Xs7Ez++te/ymg0kuPjY1kul7JaraRZLpfy8OSRzOdzuXr1qozHY/nLX/4iv/rVr2SxWMhgMJDxeGzWdCUFZKU2eI4+i9zon/PrdzEcok3fIs3SrOtGm2FFRplZa8l7FHiOVsQRKCF0j9FKxop1vb9naKD9KUlDe54RJQYEeALUS70vVZRdDVlPkWtHRt+PRZQZEMBStKIRF8Rr0akQ6O8RQ8Oju+RIIkfJAkItINAD6qJAYASIfZ5gCOLZc/JTfEA13z+tKKuqEqkrCiR5GQW6GZKmRx0xKH2+0hpNBISyiE1pDSgDKlDqNopwePQd7WHB5GeXenpPLz+PiHg0YypSOsb0i7WmqP6J9EjoojOZQ8Wa4SGQL28m2Of8WET6eTe7LbXvWEYC439Wuspo0XJEWCAK6V/rGiziWtoMu9SW8+RjXqPPgHgkD3QgLqK/PUdUf64vfUbGw3axX6NAK/LrNBDFAKsuJZSR/WdAfaQHHgPq2FpLegShHjmoofhwOJS6rqVpGtnb25P79+/L6emp3LlzR5qmkbt370pzfHwsd+7dlTfffFM+++wzadtW9vf3pW1buXTpkpyenm6JMaUa6FRmnboZUTj5g2tBrpFONr6sbw2TTq2IRCxLiaVLtAClwWnGs8ZHMEWP7mPdE9XYsfms0f2P9hpAv2tBVzo+JgoElPZQiBoIESDFi8iWKP0o0KEVWfRazBCMjIXxxit1EcQstZ/RRj4Vhe0zcwS8jr55d+uIox6NSHvjwTygw0tdjkSQENCx89wb33lj/FU3A7r/bkaBAgL093Kdpw0bz9GP1mBqua55nWVcMEMmQv8MyOoCJHo0XdJ8izki0WaeXZsVRuaga/qwelSUBirY3Pr0Pxv/ykCikmaoHhCKgOr0fVTGp4E+q6N2qXzzAkwRPdqlBr6rfVkyPrDU/oxk7DE7Jjp+r28zU6RLS0prSuw3Tz6w87fsY2TjsEBQDiRYOswKhDCbo8TGZqWtHtCk9SPaIy9wiPy/9JpMJu75sdLvlFFgBhE+/z7jn5JM49KpN0w/WOejMy7QRJT088HBwbbUX0Tk/v378t5778nbb78t7777rlSXL1+W//zv/9q888471auvvrq5ceOGfPLJJ9I0jVy8eFFOTk5kb2/PffAUsWeIH0KfGCFGoi7ed0oMCW88ETLgPUQvgkgxhcIijsxRZeNHuqQWv8geAawrqIc+exGX0pSnqKHGmkFZEQ2W2tO3BjZidKcXq4HUqX3o+SOGVAn9asS8JPLSJaLV1dBgGRMs4hq5vrf/rMbYy6jIu0pHelmUIPFR/lmvWtfxoRkzGz/iY2VUeXWoyBFBsof1cGD6K9JMMGqosa7c1vpYxgKLCDH6ZEBVlH4QbUZTt0un4kSbjbIaXgZwR3uAIJ5k/MFsp2jXcaY/WETbG5/rlQYw+cb0m5VxVZIa3be0MBLRR8CM5+hZAZwuEd0u+jFS9sX0nyXfIrLAGk3J9r9PIIPdo0vGoVVDX5IRUAoEePTP5D8KBERKl5H9UFKOifRHqX2DdH+EPrvYbwzIKpnU5X0eBarS91555RW5d++enJycyMHBgdy5c0fef//96mc/+9nmF7/4hXz84UfPrvzKq5fkpz/96ebTTz+VP/3pT/LSSy/JarWSs7MzqapKTk5OqnxqQL5BHlqmIyklDYYYIUYR90i6vjcH03L09ees8VSM4KNzmCMGeqkhUQqysNTKrgqGCer8/pE5qFEjskTIR+ivZDyUFzFB67T2pyTi3mdcomcoRiMlbDwhA8pKAZvSOcklZ9UFCLCux7o6sxoxy1CI1pKX0q8uTdFyvOv4oi1/t2u3+SdNfW5iitarwbe69UbnMUd6rHjrj/YQ8IzIPkBsBIj2ntU635JmtiwiEpmqU2LUs+tYc8q9FxtPxpz6KH93BT77TP2JvNj4Lz2NQ/MjygjQ+rmPgx6N6DFHp4+dg9aOAJAIiJQcUZZpwO4f3c+uvTa6NLRlNm0+1YXtdUkPDw9I8cb7sv2N6Cemry29VNIDqcsEAPYzyxi2rs3Abw20eOfHxn+ybKCS8auoRxkDYlGjZUQ/eqpIJHsYNVOfTCZSVZVMp9PNbDarLly4sPnJT34iN2/elN/97ndVu1x9XpxZiYwnE/nmN7+5uXr1qty9e3c7f3CxWJxLrTAJrWdpad6VWhuE1hxUhljrzerbbEMbiHkqRsQQzu9vMUfXGuaoIJvP5zv7m3+P7U9JanU0bb1UUbqG2GYdoh/EjH2bhOQ1zhFDyRNkaP3WXGo0g1kLxPR9dI/o+qIRD/3K9x/N6S1xnEvX3/f5KX1UUrQ/+nxWi9j4xq7nw7oyRw19RJ/s/JjzxdZvARElsoZ2ha52ny3nMaZ/+vJ/JPXcAmK28nvdPjf66KJfBlXda/8Hw57jAXvaH32bsbL966vf+77fV3703R8LSNKlOaVAS5RGI0Bybn/qNNuSZm0R+6OLfdK3h0XJeM0ur74ZJX1fjH6i9klE/lrnt1gsXPsivW/5ENrRs86mb7PKyFQEb/3RQC3S75EeHl3lR4n/hr4/m83OPbuWAex8+/JXBETz7s/858ViIavVSkajkQyHQzk+PpYPP/ywun///rYs8v8A/JEEMX5RiJEAAAAASUVORK5CYII=";
