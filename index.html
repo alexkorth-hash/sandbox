@@ -745,9 +745,9 @@
     if (Math.abs(v) < STICK_DEADZONE) v = 0;
     else v = Math.sign(v) * (Math.abs(v) - STICK_DEADZONE) / (1 - STICK_DEADZONE);
     // Apply exponential curve — small deflections give small bar speeds,
-    // only full deflection gives full speed. Power of 3.0 makes fine
+    // only full deflection gives full speed. Power of 3.4 makes fine
     // control easier — small nudges produce very gentle bar motion.
-    v = Math.sign(v) * Math.pow(Math.abs(v), 3.0);
+    v = Math.sign(v) * Math.pow(Math.abs(v), 3.4);
     stick.val = Math.max(-1, Math.min(1, v));
   }
 
@@ -812,7 +812,7 @@
   // ---------- Physics constants ----------
   // Note: the real arcade bar moves at ~2.5 in/sec — glacial. On a small
   // touchscreen that feels broken, so we run faster for responsiveness.
-  const BAR_TARGET_SPEED = 220;  // px/s at full stick deflection
+  const BAR_TARGET_SPEED = 200;  // px/s at full stick deflection
   const BAR_RAMP_ACCEL   = 4200; // px/s² accelerating to track the stick
   const BAR_STOP_ACCEL   = 5200; // px/s² braking when stick is centered
   const BAR_MAX_VY       = 520;  // hard velocity cap
