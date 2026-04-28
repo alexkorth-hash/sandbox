@@ -94,12 +94,17 @@
       0 0 4px rgba(255, 206, 0, 0.85),
       0 0 8px rgba(255, 206, 0, 0.45);
     display: inline-block;
+    text-align: right;
+    /* Reserve enough width for the ghost (longest ghost = 4 chars).
+       Each digit is ~14px in DSEG7 at 22px, plus a little buffer. */
+    min-width: 4ch;
   }
   /* Dim "ghost" digits behind the live value to fake unlit LED segments. */
   .score-value::before {
     content: attr(data-ghost);
     position: absolute;
     inset: 0;
+    text-align: right;
     color: rgba(255, 206, 0, 0.12);
     text-shadow: none;
     z-index: -1;
@@ -322,11 +327,7 @@
     <div id="logo-area">
       <div class="score-panel">
         <div class="score-label">BALLS</div>
-        <div class="score-balls">
-          <div class="score-ball filled" id="ball0"></div>
-          <div class="score-ball filled" id="ball1"></div>
-          <div class="score-ball filled" id="ball2"></div>
-        </div>
+        <div class="score-value" id="balls-value" data-ghost="8">3</div>
       </div>
       <div class="score-panel">
         <div class="score-label">BONUS</div>
@@ -669,8 +670,8 @@
 
   // ---------- Input ----------
   const sticks = {
-    left:  { el: document.getElementById('leftStick'),  cap: null, shaft: null, pid: null, val: 0 },
-    right: { el: document.getElementById('rightStick'), cap: null, shaft: null, pid: null, val: 0 },
+    left:  { el: document.getElementById('leftStick'),  cap: null, shaft: null, pid: null, val: 0, startY: 0 },
+    right: { el: document.getElementById('rightStick'), cap: null, shaft: null, pid: null, val: 0, startY: 0 },
   };
   sticks.left.cap    = sticks.left.el.querySelector('.stick-cap');
   sticks.left.shaft  = sticks.left.el.querySelector('.stick-shaft');
@@ -695,9 +696,10 @@
   }
 
   function updateStickFromPointer(stick, clientX, clientY) {
-    const r = stick.el.getBoundingClientRect();
-    const cy = r.top  + r.height / 2;
-    let dy = clientY - cy;
+    // dy is computed relative to where the touch STARTED (stick.startY),
+    // not the toggle's center. This way tapping anywhere on the well
+    // doesn't immediately snap the bar — you only move when you drag.
+    let dy = clientY - stick.startY;
     // Vertical-only motion — the slot in the base constrains the joystick
     // to up/down, just like a real arcade stick with a slotted gate.
     if (dy > STICK_MAX_OFFSET) dy = STICK_MAX_OFFSET;
@@ -725,9 +727,11 @@
     stick.el.addEventListener('pointerdown', (e) => {
       e.preventDefault();
       stick.pid = e.pointerId;
+      stick.startY = e.clientY;
       stick.el.setPointerCapture(e.pointerId);
       stick.el.classList.add('active');
-      updateStickFromPointer(stick, e.clientX, e.clientY);
+      // Don't call updateStickFromPointer here — initial tap shouldn't
+      // move the bar. Only subsequent pointermoves do.
     });
     stick.el.addEventListener('pointermove', (e) => {
       if (stick.pid !== e.pointerId) return;
@@ -1329,8 +1333,15 @@
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#000';
       ctx.fillText(String(hole.typeIndex), x, y - ringRadius - 1);
-      // Pulsing yellow light in the center of the hole.
-      const pulse = 0.7 + 0.3 * Math.sin(performance.now() / 240);
+      // Yellow light in the center of the hole. Pulses only when:
+      //   - Game is idle (not actively playing): all lights pulse together
+      //   - During gameplay: only the current target hole pulses
+      const isPlaying = G.state === 'play' || G.state === 'falling';
+      const isCurrentTarget = isPlaying && hole.typeIndex === G.level;
+      const shouldPulse = !isPlaying || isCurrentTarget;
+      const pulse = shouldPulse
+        ? (0.7 + 0.3 * Math.sin(performance.now() / 240))
+        : 1.0;
       const dotR = r * 0.62;
       ctx.beginPath();
       ctx.arc(x, y, dotR, 0, Math.PI * 2);
@@ -1569,20 +1580,19 @@
   const panelEl = {
     score: document.getElementById('score-value'),
     bonus: document.getElementById('bonus-value'),
-    balls: [
-      document.getElementById('ball0'),
-      document.getElementById('ball1'),
-      document.getElementById('ball2'),
-    ],
+    balls: document.getElementById('balls-value'),
   };
+  // Set static ghosts that don't change.
+  panelEl.score.setAttribute('data-ghost', '8888');
+  panelEl.balls.setAttribute('data-ghost', '8');
   let lastScore = -1, lastBonus = -1, lastLives = -1;
   function drawScorePanels() {
     const score = Math.floor(G.displayScore);
     const bonus = Math.floor(G.displayBonus);
     if (score !== lastScore) {
+      // Ghost shows full 4-digit "8888" but the live value is the raw
+      // number — so a score of 0 only lights up one digit.
       panelEl.score.textContent = String(score);
-      // Ghost shows the same number of digits as the value so they align.
-      panelEl.score.setAttribute('data-ghost', '8'.repeat(String(score).length));
       lastScore = score;
     }
     if (bonus !== lastBonus) {
@@ -1591,9 +1601,7 @@
       lastBonus = bonus;
     }
     if (G.lives !== lastLives) {
-      for (let b = 0; b < 3; b++) {
-        panelEl.balls[b].classList.toggle('filled', b < G.lives);
-      }
+      panelEl.balls.textContent = String(G.lives);
       lastLives = G.lives;
     }
   }
