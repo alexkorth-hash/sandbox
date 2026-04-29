@@ -355,7 +355,13 @@
   /* Full-screen dark backdrop. Tap-through is blocked. */
   #physics-overlay {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    /* Dynamic viewport height — accounts for iOS Safari's URL bar showing
+       and hiding. Falls back to vh on browsers that don't support dvh. */
+    height: 100vh;
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.7);
     z-index: 9999;
     /* Use 16px insets on every side so the modal sits within a clean
@@ -372,6 +378,7 @@
     padding-bottom: max(16px, env(safe-area-inset-bottom));
     padding-left: max(16px, env(safe-area-inset-left));
     padding-right: max(16px, env(safe-area-inset-right));
+    box-sizing: border-box;
   }
   #physics-overlay.hidden {
     display: none;
@@ -385,14 +392,13 @@
        up to the max width on tablets/desktop. */
     flex: 1 1 auto;
     max-width: 480px;
-    /* No max-height — the modal naturally fills the viewport between
-       the 16px top and bottom insets because the overlay uses
-       align-items: stretch. */
+    min-height: 0;
     display: flex;
     flex-direction: column;
     color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
     overflow: hidden;
+    box-sizing: border-box;
   }
   .physics-header {
     padding-bottom: 14px;
@@ -1026,41 +1032,49 @@
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown')                      applyKeyVal('right', 0);
   });
 
-  // Start button: short click starts a new game, long-press (3+ seconds)
-  // opens the physics tuning overlay.
-  let startPressTimer = null;
-  let startPressTriggered = false;
-  const LONG_PRESS_MS = 3000;
-
-  startBtn.addEventListener('pointerdown', (e) => {
-    startPressTriggered = false;
-    startPressTimer = setTimeout(() => {
-      startPressTriggered = true;
-      // Haptic-ish feedback: brief vibration if available.
-      if (navigator.vibrate) navigator.vibrate(40);
-      openPhysicsOverlay();
-    }, LONG_PRESS_MS);
-  });
-  const cancelLongPress = () => {
-    if (startPressTimer) {
-      clearTimeout(startPressTimer);
-      startPressTimer = null;
-    }
-  };
-  startBtn.addEventListener('pointerup', cancelLongPress);
-  startBtn.addEventListener('pointerleave', cancelLongPress);
-  startBtn.addEventListener('pointercancel', cancelLongPress);
-
-  startBtn.addEventListener('click', (e) => {
-    // Suppress the click that fired right after a long-press completed.
-    if (startPressTriggered) {
-      startPressTriggered = false;
-      return;
-    }
+  // Start button: simple click starts a new game.
+  startBtn.addEventListener('click', () => {
     releaseStick(sticks.left);
     releaseStick(sticks.right);
     newGame();
   });
+
+  // Tap-and-hold on the playfield (2 seconds) opens the physics tuning
+  // overlay. Movement during the hold cancels — only a still finger triggers.
+  let boardPressTimer = null;
+  let boardPressX = 0;
+  let boardPressY = 0;
+  const BOARD_LONG_PRESS_MS = 2000;
+  const BOARD_MOVE_TOLERANCE = 10;  // px of movement allowed during hold
+
+  canvas.addEventListener('pointerdown', (e) => {
+    boardPressX = e.clientX;
+    boardPressY = e.clientY;
+    if (boardPressTimer) clearTimeout(boardPressTimer);
+    boardPressTimer = setTimeout(() => {
+      boardPressTimer = null;
+      if (navigator.vibrate) navigator.vibrate(40);
+      openPhysicsOverlay();
+    }, BOARD_LONG_PRESS_MS);
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    if (!boardPressTimer) return;
+    const dx = e.clientX - boardPressX;
+    const dy = e.clientY - boardPressY;
+    if (Math.hypot(dx, dy) > BOARD_MOVE_TOLERANCE) {
+      clearTimeout(boardPressTimer);
+      boardPressTimer = null;
+    }
+  });
+  const cancelBoardLongPress = () => {
+    if (boardPressTimer) {
+      clearTimeout(boardPressTimer);
+      boardPressTimer = null;
+    }
+  };
+  canvas.addEventListener('pointerup', cancelBoardLongPress);
+  canvas.addEventListener('pointerleave', cancelBoardLongPress);
+  canvas.addEventListener('pointercancel', cancelBoardLongPress);
 
   // ---------- Physics constants ----------
   // Note: the real arcade bar moves at ~2.5 in/sec — glacial. On a small
