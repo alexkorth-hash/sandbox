@@ -350,6 +350,208 @@
     line-height: 1;
     z-index: 1;
   }
+
+  /* ----- Physics tuning overlay ----- */
+  /* Full-screen dark backdrop. Tap-through is blocked. */
+  #physics-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    /* Use 16px insets on every side so the modal sits within a clean
+       margin regardless of phone size. The modal flexes to fill the
+       remaining space (capped at sensible max width). */
+    padding: 16px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* Respect safe areas on iOS notched devices. */
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  #physics-overlay.hidden {
+    display: none;
+  }
+  .physics-modal {
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px 18px 16px;
+    /* Flex fill the available space inside the 16px-padded overlay,
+       up to the max width on tablets/desktop. */
+    flex: 1 1 auto;
+    max-width: 480px;
+    /* No max-height — the modal naturally fills the viewport between
+       the 16px top and bottom insets because the overlay uses
+       align-items: stretch. */
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    overflow: hidden;
+  }
+  .physics-header {
+    padding-bottom: 14px;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+  }
+  .physics-title {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .physics-subtitle {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.4;
+  }
+  .physics-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 4px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .physics-row {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .physics-row:first-child {
+    padding-top: 6px;
+  }
+  .physics-row:last-child {
+    border-bottom: none;
+  }
+  .physics-row-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .physics-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.92);
+    letter-spacing: -0.01em;
+  }
+  .physics-value {
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    min-width: 50px;
+    text-align: right;
+  }
+  .physics-desc {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .physics-slider-wrap {
+    position: relative;
+    width: 100%;
+    height: 22px;
+  }
+  /* Vertical line marking the default value's position on the track. */
+  .physics-default-tick {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    margin-left: -1px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 1px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .physics-row input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    height: 22px;
+    margin: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .physics-row input[type="range"]::-webkit-slider-runnable-track {
+    height: 2px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 1px;
+  }
+  .physics-row input[type="range"]::-moz-range-track {
+    height: 2px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 1px;
+  }
+  .physics-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    margin-top: -8px;
+    cursor: pointer;
+  }
+  .physics-row input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  .physics-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 14px;
+    margin-top: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+  .physics-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .physics-btn {
+    padding: 9px 16px;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: -0.01em;
+  }
+  .physics-btn:active {
+    transform: scale(0.97);
+  }
+  .physics-btn.primary {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+  .physics-btn.ghost {
+    background: transparent;
+    border-color: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    padding: 9px 8px;
+  }
 </style>
 </head>
 <body>
@@ -386,6 +588,28 @@
           <div class="stick-slot"><div class="stick-shaft"></div></div>
           <div class="stick-cap"></div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Physics tuning overlay — opened via long-press on START.
+     Lets the player adjust every physics parameter live, save the result,
+     cancel changes, or reset to defaults. -->
+<div id="physics-overlay" class="hidden">
+  <div class="physics-modal">
+    <div class="physics-header">
+      <div class="physics-title">Physics tuning</div>
+      <div class="physics-subtitle">Adjust values, screenshot to share, then save or cancel.</div>
+    </div>
+    <div class="physics-body" id="physics-body">
+      <!-- Sliders injected by JS so labels/values stay in sync. -->
+    </div>
+    <div class="physics-footer">
+      <button id="physics-reset" class="physics-btn ghost">Reset to Defaults</button>
+      <div class="physics-actions">
+        <button id="physics-cancel" class="physics-btn">Cancel</button>
+        <button id="physics-save" class="physics-btn primary">Save</button>
       </div>
     </div>
   </div>
@@ -715,12 +939,11 @@
   sticks.right.shaft = sticks.right.el.querySelector('.stick-shaft');
 
   const STICK_MAX_OFFSET = 20;
-  const STICK_DEADZONE = 0.12;
-  const STICK_SPRING_MS = 110;
+  
 
   function setCapTransform(stick, dx, dy, animate) {
     const transition = animate
-      ? `transform ${STICK_SPRING_MS}ms cubic-bezier(.5,1.6,.4,1)`
+      ? `transform ${PHYSICS.stickSpringMs}ms cubic-bezier(.5,1.6,.4,1)`
       : 'none';
     stick.cap.style.transition = transition;
     stick.cap.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
@@ -742,12 +965,12 @@
     else if (dy < -STICK_MAX_OFFSET) dy = -STICK_MAX_OFFSET;
     setCapTransform(stick, 0, dy, false);
     let v = dy / STICK_MAX_OFFSET;
-    if (Math.abs(v) < STICK_DEADZONE) v = 0;
-    else v = Math.sign(v) * (Math.abs(v) - STICK_DEADZONE) / (1 - STICK_DEADZONE);
+    if (Math.abs(v) < PHYSICS.stickDeadzone) v = 0;
+    else v = Math.sign(v) * (Math.abs(v) - PHYSICS.stickDeadzone) / (1 - PHYSICS.stickDeadzone);
     // Apply exponential curve — small deflections give small bar speeds,
     // only full deflection gives full speed. Power of 3.4 makes fine
     // control easier — small nudges produce very gentle bar motion.
-    v = Math.sign(v) * Math.pow(Math.abs(v), 3.4);
+    v = Math.sign(v) * Math.pow(Math.abs(v), PHYSICS.stickCurve);
     stick.val = Math.max(-1, Math.min(1, v));
   }
 
@@ -803,7 +1026,37 @@
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown')                      applyKeyVal('right', 0);
   });
 
-  startBtn.addEventListener('click', () => {
+  // Start button: short click starts a new game, long-press (3+ seconds)
+  // opens the physics tuning overlay.
+  let startPressTimer = null;
+  let startPressTriggered = false;
+  const LONG_PRESS_MS = 3000;
+
+  startBtn.addEventListener('pointerdown', (e) => {
+    startPressTriggered = false;
+    startPressTimer = setTimeout(() => {
+      startPressTriggered = true;
+      // Haptic-ish feedback: brief vibration if available.
+      if (navigator.vibrate) navigator.vibrate(40);
+      openPhysicsOverlay();
+    }, LONG_PRESS_MS);
+  });
+  const cancelLongPress = () => {
+    if (startPressTimer) {
+      clearTimeout(startPressTimer);
+      startPressTimer = null;
+    }
+  };
+  startBtn.addEventListener('pointerup', cancelLongPress);
+  startBtn.addEventListener('pointerleave', cancelLongPress);
+  startBtn.addEventListener('pointercancel', cancelLongPress);
+
+  startBtn.addEventListener('click', (e) => {
+    // Suppress the click that fired right after a long-press completed.
+    if (startPressTriggered) {
+      startPressTriggered = false;
+      return;
+    }
     releaseStick(sticks.left);
     releaseStick(sticks.right);
     newGame();
@@ -812,14 +1065,22 @@
   // ---------- Physics constants ----------
   // Note: the real arcade bar moves at ~2.5 in/sec — glacial. On a small
   // touchscreen that feels broken, so we run faster for responsiveness.
-  const BAR_TARGET_SPEED = 200;  // px/s at full stick deflection
-  const BAR_RAMP_ACCEL   = 4200; // px/s² accelerating to track the stick
-  const BAR_STOP_ACCEL   = 5200; // px/s² braking when stick is centered
-  const BAR_MAX_VY       = 520;  // hard velocity cap
-
-  const BALL_GRAVITY  = 1300;
-  const BALL_FRICTION = 0.995;
-  const BALL_BOUNCE   = 0.40;
+  // Physics settings — exposed via a debug overlay so values can be tuned
+  // live. These are the defaults used at boot; the overlay lets the player
+  // adjust them and save/restore.
+  const PHYSICS_DEFAULTS = {
+    barTargetSpeed: 200,    // px/s at full stick deflection
+    barRampAccel:   4200,   // px/s² accelerating to track the stick
+    barStopAccel:   5200,   // px/s² braking when stick is centered
+    barMaxVy:       520,    // hard velocity cap
+    ballGravity:    1300,   // px/s² downhill acceleration
+    ballFriction:   0.995,  // multiplied per frame (closer to 1 = less drag)
+    ballBounce:     0.40,   // bracket bounce coefficient (0 = dead, 1 = perfect)
+    stickDeadzone:  0.12,   // 0..1 — toggle deflection ignored below this
+    stickSpringMs:  110,    // ms — toggle return-to-center spring duration
+    stickCurve:     3.4,    // exponent applied to deflection (higher = gentler)
+  };
+  const PHYSICS = { ...PHYSICS_DEFAULTS };
 
   // ---------- Loop ----------
   let lastT = 0;
@@ -885,13 +1146,13 @@
 
   function stepPlay(dt) {
     const updateEnd = (stickVal, y, vy) => {
-      const targetVy = stickVal * BAR_TARGET_SPEED;
-      const accel = (stickVal === 0) ? BAR_STOP_ACCEL : BAR_RAMP_ACCEL;
+      const targetVy = stickVal * PHYSICS.barTargetSpeed;
+      const accel = (stickVal === 0) ? PHYSICS.barStopAccel : PHYSICS.barRampAccel;
       const dv = targetVy - vy;
       const step = accel * dt;
       if (Math.abs(dv) <= step) vy = targetVy;
       else                      vy += Math.sign(dv) * step;
-      vy = Math.max(-BAR_MAX_VY, Math.min(BAR_MAX_VY, vy));
+      vy = Math.max(-PHYSICS.barMaxVy, Math.min(PHYSICS.barMaxVy, vy));
       y += vy * dt;
       if (y < G.barMinY) { y = G.barMinY; vy = 0; }
       if (y > G.barMaxY) { y = G.barMaxY; vy = 0; }
@@ -912,9 +1173,9 @@
     const barLen = Math.hypot(dx, dy);
     const sinTheta = dy / barLen;
 
-    const accel = BALL_GRAVITY * sinTheta;
+    const accel = PHYSICS.ballGravity * sinTheta;
     G.ballVx += accel * dt;
-    G.ballVx *= Math.pow(BALL_FRICTION, dt * 60);
+    G.ballVx *= Math.pow(PHYSICS.ballFriction, dt * 60);
     G.ballX  += G.ballVx * dt;
 
     // Ball bounces off the inner edge of each post. The post is drawn 8px
@@ -933,8 +1194,8 @@
     const insetX = (POST_INSET + G.pegRadius + G.ballRadius) * horizontalProjection;
     const minX = lx + insetX;
     const maxX = rx - insetX;
-    if (G.ballX < minX) { G.ballX = minX; G.ballVx = -G.ballVx * BALL_BOUNCE; }
-    if (G.ballX > maxX) { G.ballX = maxX; G.ballVx = -G.ballVx * BALL_BOUNCE; }
+    if (G.ballX < minX) { G.ballX = minX; G.ballVx = -G.ballVx * PHYSICS.ballBounce; }
+    if (G.ballX > maxX) { G.ballX = maxX; G.ballVx = -G.ballVx * PHYSICS.ballBounce; }
 
     const t = (G.ballX - lx) / dx;
     // Bar surface y at the ball's x — this is the TOP of the rod where the
@@ -1846,6 +2107,127 @@
     ctx.fillStyle = 'rgba(255,255,255,0.55)';
     ctx.fill();
   }
+
+  // ---------- Physics tuning overlay ----------
+  // Definitions for each tunable parameter: label, description, range,
+  // step, and how to format the value display. The order here is the
+  // order they appear in the overlay.
+  const PHYSICS_FIELDS = [
+    { key: 'barTargetSpeed', label: 'Bar speed (max)', desc: 'How fast the bar moves at full toggle deflection.',
+      min: 50, max: 600, step: 10, format: v => v + ' px/s' },
+    { key: 'stickCurve', label: 'Toggle response curve', desc: 'Higher = more gentle response on small nudges.',
+      min: 1, max: 6, step: 0.1, format: v => v.toFixed(1) },
+    { key: 'stickDeadzone', label: 'Toggle deadzone', desc: 'Tiny deflections below this are ignored.',
+      min: 0, max: 0.4, step: 0.01, format: v => v.toFixed(2) },
+    { key: 'barRampAccel', label: 'Bar acceleration', desc: 'How quickly the bar reaches target speed.',
+      min: 500, max: 10000, step: 100, format: v => v + ' px/s²' },
+    { key: 'barStopAccel', label: 'Bar braking', desc: 'How quickly the bar stops when toggles release.',
+      min: 500, max: 10000, step: 100, format: v => v + ' px/s²' },
+    { key: 'barMaxVy', label: 'Bar velocity cap', desc: 'Hard ceiling on bar speed regardless of input.',
+      min: 100, max: 1500, step: 10, format: v => v + ' px/s' },
+    { key: 'ballGravity', label: 'Ball gravity', desc: 'Downhill acceleration of the ball along the bar.',
+      min: 200, max: 3000, step: 50, format: v => v + ' px/s²' },
+    { key: 'ballFriction', label: 'Ball friction', desc: 'Closer to 1.000 = less drag, ball rolls farther.',
+      min: 0.95, max: 1.0, step: 0.001, format: v => v.toFixed(3) },
+    { key: 'ballBounce', label: 'Bracket bounce', desc: '0 = dead stop, 1 = perfect bounce off the brackets.',
+      min: 0, max: 1, step: 0.05, format: v => v.toFixed(2) },
+    { key: 'stickSpringMs', label: 'Toggle spring (ms)', desc: 'How quickly the toggle returns to center.',
+      min: 30, max: 400, step: 10, format: v => v + ' ms' },
+  ];
+
+  const physicsOverlay = document.getElementById('physics-overlay');
+  const physicsBody    = document.getElementById('physics-body');
+  const physicsCancel  = document.getElementById('physics-cancel');
+  const physicsSave    = document.getElementById('physics-save');
+  const physicsReset   = document.getElementById('physics-reset');
+  let physicsSnapshot  = null;  // values when overlay opened, used for cancel
+
+  function buildPhysicsRows() {
+    physicsBody.innerHTML = '';
+    for (const field of PHYSICS_FIELDS) {
+      const row = document.createElement('div');
+      row.className = 'physics-row';
+      const head = document.createElement('div');
+      head.className = 'physics-row-head';
+      const label = document.createElement('div');
+      label.className = 'physics-label';
+      label.textContent = field.label;
+      const value = document.createElement('div');
+      value.className = 'physics-value';
+      value.id = 'pv-' + field.key;
+      head.appendChild(label);
+      head.appendChild(value);
+      const desc = document.createElement('div');
+      desc.className = 'physics-desc';
+      desc.textContent = field.desc;
+      const sliderWrap = document.createElement('div');
+      sliderWrap.className = 'physics-slider-wrap';
+      // Default-position tick mark — shows where the original default sits.
+      const defaultVal = PHYSICS_DEFAULTS[field.key];
+      const defaultPct = ((defaultVal - field.min) / (field.max - field.min)) * 100;
+      const tick = document.createElement('div');
+      tick.className = 'physics-default-tick';
+      tick.style.left = defaultPct + '%';
+      sliderWrap.appendChild(tick);
+
+      const slider = document.createElement('input');
+      slider.type = 'range';
+      slider.min = field.min;
+      slider.max = field.max;
+      slider.step = field.step;
+      slider.id = 'ps-' + field.key;
+      // Snap range — within 3% of the slider's total range, the value snaps
+      // to the default. Makes it easy to recover the baseline by sweeping
+      // past the tick mark.
+      const snapDelta = (field.max - field.min) * 0.03;
+      slider.addEventListener('input', () => {
+        let v = parseFloat(slider.value);
+        if (Math.abs(v - defaultVal) <= snapDelta) {
+          v = defaultVal;
+          slider.value = v;
+        }
+        PHYSICS[field.key] = v;
+        value.textContent = field.format(v);
+      });
+      row.appendChild(head);
+      row.appendChild(desc);
+      sliderWrap.appendChild(slider);
+      row.appendChild(sliderWrap);
+      physicsBody.appendChild(row);
+    }
+  }
+  buildPhysicsRows();
+
+  function syncPhysicsRows() {
+    for (const field of PHYSICS_FIELDS) {
+      const v = PHYSICS[field.key];
+      const slider = document.getElementById('ps-' + field.key);
+      const value  = document.getElementById('pv-' + field.key);
+      if (slider) slider.value = v;
+      if (value)  value.textContent = field.format(v);
+    }
+  }
+
+  function openPhysicsOverlay() {
+    physicsSnapshot = { ...PHYSICS };
+    syncPhysicsRows();
+    physicsOverlay.classList.remove('hidden');
+  }
+  function closePhysicsOverlay() {
+    physicsOverlay.classList.add('hidden');
+  }
+
+  physicsCancel.addEventListener('click', () => {
+    if (physicsSnapshot) Object.assign(PHYSICS, physicsSnapshot);
+    closePhysicsOverlay();
+  });
+  physicsSave.addEventListener('click', () => {
+    closePhysicsOverlay();
+  });
+  physicsReset.addEventListener('click', () => {
+    Object.assign(PHYSICS, PHYSICS_DEFAULTS);
+    syncPhysicsRows();
+  });
 
   resize();
   generateHoles();
